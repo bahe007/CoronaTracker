@@ -23,11 +23,19 @@
         <h3>Graph</h3>
         <canvas id="chart"></canvas>
 
-      <h3>Model</h3>
-      <p>It is commonly suggested that a virus would spread in an exponential way until artificial immunization is available (<a href="https://en.wikipedia.org/wiki/Exponential_growth#Biology">Wikipedia</a>). Hence a linear curve fitting problem is solved to compute the values for <code>a</code>, <code>b</code>, <code>c</code> of the following model:</p>
-      <p><code>f(x) = a*e^x+bx+c</code></p>
-      <p>The values for the most current model are:</p>
-      <ul>
+      <h3>Models</h3>
+      <p>It is commonly suggested that a virus spreads in an exponential way until artificial immunization is available (<a href="https://en.wikipedia.org/wiki/Exponential_growth#Biology">Wikipedia</a>). Hence linear curve fittings problems are solved to test if this hypothesis applies to 2019-nCoV as well.</p>
+      <p>However, during recent days the original model <code>f(x)</code> performed worse every day, hence an alternative model <code>g(x)</code> is provided that uses a smaller base.</p>
+      <h4><code>f(x) = a*e^x+bx+c</code></h4>
+      <ul class="model-1">
+        <li><code>a</code>: <span class="model-a"></span></li>
+        <li><code>b</code>: <span class="model-b"></span></li>
+        <li><code>c</code>: <span class="model-c"></span></li>
+        <li>Root Mean Square Error (RMSE): <span class="model-rmse"></span></li>
+      </ul>
+
+      <h4><code>g(x) = a*(e/2)^x+bx+c</code></h4>
+      <ul class="model-2">
         <li><code>a</code>: <span class="model-a"></span></li>
         <li><code>b</code>: <span class="model-b"></span></li>
         <li><code>c</code>: <span class="model-c"></span></li>
@@ -108,6 +116,11 @@
                 <th scope="row" class="date">2020/01/27</th>
                 <td class="number">2744</td class="number">
                 <td><a href="https://www.sueddeutsche.de/gesundheit/coronavirus-update-china-ausbreitung-1.4773148">Süddeutsche Zeitung</a></td>
+              </tr>
+              <tr class="dataset">
+                <th scope="row" class="date">2020/01/28</th>
+                <td class="number">4035</td class="number">
+                <td><a href="https://www.zeit.de/news/2020-01/27/usa-raten-wegen-coronavirus-von-reisen-nach-china-ab">Zeit Online</a></td>
               </tr>
             </tbody>
           </table> 

@@ -1,13 +1,14 @@
 $(window).ready(function() {
     const data = createData();
-    const modelData = createModel(data.x, data.y)
+    const modelData1 = createExponentialLinearModel1(data.x, data.y);
+    const modelData2 = createExponentialLinearModel2(data.x, data.y);
 
-    $(".model-a").text(modelData["model"][0].toFixed(6));
-    $(".model-b").text(modelData["model"][1].toFixed(2));
-    $(".model-c").text(modelData["model"][2].toFixed(2));
-    $(".model-rmse").text(modelData["rmse"].toFixed(2));
+    $(".model-a").text(modelData1["model"][0].toFixed(6));
+    $(".model-b").text(modelData1["model"][1].toFixed(2));
+    $(".model-c").text(modelData1["model"][2].toFixed(2));
+    $(".model-rmse").text(modelData1["rmse"].toFixed(2));
 
-    createGraph(data.x, data.y, modelData.x, modelData.y);
+    createGraph(data.x, data.y, modelData1.x, modelData1.y, modelData2.x, modelData2.y);
 });
 
 function createData() {
@@ -27,22 +28,51 @@ function createData() {
     return data;
 }
 
-function createModel(x, y) {
+function createExponentialLinearModel1(x, y) {
     let A = [];
-    let b = y;
     for (let i = 0; i < x.length; i++) {
         const x_elem = x[i];
         A.push([Math.exp(x_elem), x_elem, 1]);
     }
+
+    let points = [];
+    for (let i = 0; i <= x[x.length-1]; i++) {
+        points.push([Math.exp(i), i, 1]);
+    }
+
+    return createModel(x, y, A, points);
+}
+
+function createExponentialLinearModel2(x, y) {
+    let A = [];
+    for (let i = 0; i < x.length; i++) {
+        const x_elem = x[i];
+        A.push([Math.pow(Math.E/2, x_elem), x_elem, 1]);
+    }
+
+    let points = [];
+    for (let i = 0; i <= x[x.length-1]; i++) {
+        points.push([Math.pow(Math.E/2, i), i, 1]);
+    }
+
+    return createModel(x, y, A, points);
+}
+
+function createModel(x, y, A, points) {
+    let b = y;
     const model = math.lusolve(
         math.multiply(math.transpose(A), A),
         math.multiply(math.transpose(A), b)
         );
+    for (let i = 0; i < model.length; i++) {
+        const entry = model[i];
+        model[i] = entry[0];
+    }
     
     let modelValues = {"x": [], "y": []};
     for (let i = 0; i <= x[x.length-1]; i++) {
         modelValues["x"].push(i);
-        modelValues["y"].push(model[0][0]*Math.exp(i)+model[1][0]*i+model[2][0]);
+        modelValues["y"].push(math.dot(model, points[i]));
     }
 
     let rmse = 0.0;
@@ -52,22 +82,23 @@ function createModel(x, y) {
     }
     rmse = math.sqrt(rmse/x.length);
     modelValues["rmse"] = rmse;
-    modelValues["model"] = [model[0][0], model[1][0], model[2][0]];    
+    modelValues["model"] = model;    
     
     return modelValues;
 }
 
-function createGraph(x, y, xModel, yModel) {
+function createGraph(x, y, xModel1, yModel1, xModel2, yModel2) {
     const x_y_combination = [];
     for (let i = 0; i <= x.length; i++) {
         const x_point = x[i];
         x_y_combination.push({"x": x_point, "y": y[i]});
     }
 
-    const x_y_combination_model = [];
-    for (let i = 0; i <= xModel.length; i++) {
-        const x_point = xModel[i];
-        x_y_combination_model.push({"x": x_point, "y": yModel[i]});
+    const x_y_combination_model1 = [];
+    const x_y_combination_model2 = [];
+    for (let i = 0; i <= xModel1.length; i++) {
+        x_y_combination_model1.push({"x": xModel1[i], "y": yModel1[i]});
+        x_y_combination_model2.push({"x": xModel2[i], "y": yModel2[i]});
     }
 
     const ctx = document.getElementById('chart').getContext('2d');
@@ -79,13 +110,22 @@ function createGraph(x, y, xModel, yModel) {
                 label: 'Datapoints',
                 fill: false,
                 borderColor: 'rgb(255, 204, 102)',
+                backgroundColor: 'rgb(255, 204, 102)',
                 borderWidth: 5,
                 borderDash: [1, 10000],
                 data: x_y_combination,
             }, {
-                label: 'Model',
-                data: x_y_combination_model,
+                label: 'f(x)',
+                data: x_y_combination_model1,
                 borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgb(255, 99, 132)',
+                lineWidth: 50,
+                fill: false,
+            }, {
+                label: 'g(x)',
+                data: x_y_combination_model2,
+                borderColor: 'blue',
+                backgroundColor: 'blue',
                 lineWidth: 50,
                 fill: false,
             }]
