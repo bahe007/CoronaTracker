@@ -3,10 +3,15 @@ $(window).ready(function() {
     const modelData1 = createExponentialLinearModel1(data.x, data.y);
     const modelData2 = createExponentialLinearModel2(data.x, data.y);
 
-    $(".model-a").text(modelData1["model"][0].toFixed(6));
-    $(".model-b").text(modelData1["model"][1].toFixed(2));
-    $(".model-c").text(modelData1["model"][2].toFixed(2));
-    $(".model-rmse").text(modelData1["rmse"].toFixed(2));
+    $(".model-1").find(".model-a").text(modelData1["model"][0].toFixed(6));
+    $(".model-1").find(".model-b").text(modelData1["model"][1].toFixed(2));
+    $(".model-1").find(".model-c").text(modelData1["model"][2].toFixed(2));
+    $(".model-1").find(".model-rmse").text(modelData1["rmse"].toFixed(2));
+
+    $(".model-2").find(".model-a").text(modelData2["model"][0].toFixed(6));
+    $(".model-2").find(".model-b").text(modelData2["model"][1].toFixed(2));
+    $(".model-2").find(".model-c").text(modelData2["model"][2].toFixed(2));
+    $(".model-2").find(".model-rmse").text(modelData2["rmse"].toFixed(2));
 
     createGraph(data.x, data.y, modelData1.x, modelData1.y, modelData2.x, modelData2.y);
 });
