@@ -1,19 +1,14 @@
 $(window).ready(function() {
     const data = createData();
-    const modelData1 = createExponentialLinearModel1(data.x, data.y);
-    const modelData2 = createExponentialLinearModel2(data.x, data.y);
+    const linearModelData = createExponentialLinearModel2(data.x, data.y);
+    const nonlinearTanhModelData = createTanhModel(data.x, data.y);
 
-    $(".model-1").find(".model-a").text(modelData1["model"][0].toFixed(6));
-    $(".model-1").find(".model-b").text(modelData1["model"][1].toFixed(2));
-    $(".model-1").find(".model-c").text(modelData1["model"][2].toFixed(2));
-    $(".model-1").find(".model-rmse").text(modelData1["rmse"].toFixed(2));
+    $(".model-2").find(".model-a").text(linearModelData["model"][0].toFixed(6));
+    $(".model-2").find(".model-b").text(linearModelData["model"][1].toFixed(2));
+    $(".model-2").find(".model-c").text(linearModelData["model"][2].toFixed(2));
+    $(".model-2").find(".model-rmse").text(linearModelData["rmse"].toFixed(2));
 
-    $(".model-2").find(".model-a").text(modelData2["model"][0].toFixed(6));
-    $(".model-2").find(".model-b").text(modelData2["model"][1].toFixed(2));
-    $(".model-2").find(".model-c").text(modelData2["model"][2].toFixed(2));
-    $(".model-2").find(".model-rmse").text(modelData2["rmse"].toFixed(2));
-
-    createGraph(data.x, data.y, modelData1.x, modelData1.y, modelData2.x, modelData2.y);
+    createGraph(data.x, data.y, linearModelData.x, linearModelData.y, nonlinearTanhModelData.x, nonlinearTanhModelData.y);
 });
 
 function createData() {
@@ -46,6 +41,28 @@ function createExponentialLinearModel1(x, y) {
     }
 
     return createModel(x, y, A, points);
+}
+
+function createTanhModel(x, y) {
+    let a, v, s;
+    a = parseFloat($(".model-nonlinear-1").find(".model-nonlinear-a").text());
+    v = parseFloat($(".model-nonlinear-1").find(".model-nonlinear-v").text());
+    s = parseFloat($(".model-nonlinear-1").find(".model-nonlinear-s").text());
+    console.log(a, v, s);
+    
+    let t = [];
+    let y_model = [];
+    for (let i = 0; i <= x[x.length-1]; i++) {
+        console.log(i, a * ( 1+Math.tanh(s*i-v) ), Math.tanh(s*i-v), s, s*i);
+        
+        t.push(i);
+        y_model.push( a * ( 1+Math.tanh(s*i-v) ) );
+    }
+
+    return {
+        "x": t, 
+        "y": y_model
+    };
 }
 
 function createExponentialLinearModel2(x, y) {
@@ -120,14 +137,14 @@ function createGraph(x, y, xModel1, yModel1, xModel2, yModel2) {
                 borderDash: [1, 10000],
                 data: x_y_combination,
             }, {
-                label: 'f(x)',
+                label: 'g(t)',
                 data: x_y_combination_model1,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgb(255, 99, 132)',
                 lineWidth: 50,
                 fill: false,
             }, {
-                label: 'g(x)',
+                label: 'h(t)',
                 data: x_y_combination_model2,
                 borderColor: 'blue',
                 backgroundColor: 'blue',
