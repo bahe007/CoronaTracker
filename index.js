@@ -2,13 +2,14 @@ $(window).ready(function() {
     const data = createData();
     const linearModelData = createExponentialLinearModel2(data.x, data.y);
     const nonlinearTanhModelData = createTanhModel(data.x, data.y);
+    const nonlinearExpModelData = createNonlinearExponentialModel(data.x, data.y)
 
     $(".model-2").find(".model-a").text(linearModelData["model"][0].toFixed(6));
     $(".model-2").find(".model-b").text(linearModelData["model"][1].toFixed(2));
     $(".model-2").find(".model-c").text(linearModelData["model"][2].toFixed(2));
     $(".model-2").find(".model-rmse").text(linearModelData["rmse"].toFixed(2));
-
-    createGraph(data.x, data.y, linearModelData.x, linearModelData.y, nonlinearTanhModelData.x, nonlinearTanhModelData.y);
+    
+    createGraph(data.x, data.y, linearModelData.x, linearModelData.y, nonlinearTanhModelData.x, nonlinearTanhModelData.y, nonlinearExpModelData.x, nonlinearExpModelData.y);
 });
 
 function createData() {
@@ -48,16 +49,32 @@ function createTanhModel(x, y) {
     a = parseFloat($(".model-nonlinear-1").find(".model-nonlinear-a").text());
     v = parseFloat($(".model-nonlinear-1").find(".model-nonlinear-v").text());
     s = parseFloat($(".model-nonlinear-1").find(".model-nonlinear-s").text());
-    console.log(a, v, s);
     
     let t = [];
     let y_model = [];
-    for (let i = 0; i <= x[x.length-1]; i++) {
-        console.log(i, a * ( 1+Math.tanh(s*i-v) ), Math.tanh(s*i-v), s, s*i);
-        
+    for (let i = 0; i <= x[x.length-1]; i++) {        
         t.push(i);
         y_model.push( a * ( 1+Math.tanh(s*i-v) ) );
     }
+    
+    return {
+        "x": t, 
+        "y": y_model
+    };
+}
+
+function createNonlinearExponentialModel(x, y) {
+    let a, b, v;
+    a = parseFloat($(".model-nonlinear-2").find(".model-nonlinear-a").text());
+    b = parseFloat($(".model-nonlinear-2").find(".model-nonlinear-b").text());
+    v = parseFloat($(".model-nonlinear-2").find(".model-nonlinear-v").text());    
+    
+    let t = [];
+    let y_model = [];
+    for (let i = 0; i <= x[x.length-1]; i++) {        
+        t.push(i);
+        y_model.push( a * Math.pow(b, i-v) );
+    }    
 
     return {
         "x": t, 
@@ -109,7 +126,7 @@ function createModel(x, y, A, points) {
     return modelValues;
 }
 
-function createGraph(x, y, xModel1, yModel1, xModel2, yModel2) {
+function createGraph(x, y, xModel1, yModel1, xModel2, yModel2, xModel3, yModel3) {
     const x_y_combination = [];
     for (let i = 0; i <= x.length; i++) {
         const x_point = x[i];
@@ -118,10 +135,12 @@ function createGraph(x, y, xModel1, yModel1, xModel2, yModel2) {
 
     const x_y_combination_model1 = [];
     const x_y_combination_model2 = [];
+    const x_y_combination_model3 = [];
     for (let i = 0; i <= xModel1.length; i++) {
         x_y_combination_model1.push({"x": xModel1[i], "y": yModel1[i]});
         x_y_combination_model2.push({"x": xModel2[i], "y": yModel2[i]});
-    }
+        x_y_combination_model3.push({"x": xModel3[i], "y": yModel3[i]});
+    }    
 
     const ctx = document.getElementById('chart').getContext('2d');
     const _ = new Chart(ctx, {
@@ -148,6 +167,13 @@ function createGraph(x, y, xModel1, yModel1, xModel2, yModel2) {
                 data: x_y_combination_model2,
                 borderColor: 'blue',
                 backgroundColor: 'blue',
+                lineWidth: 50,
+                fill: false,
+            }, {
+                label: 'i(t)',
+                data: x_y_combination_model3,
+                borderColor: 'green',
+                backgroundColor: 'green',
                 lineWidth: 50,
                 fill: false,
             }]
