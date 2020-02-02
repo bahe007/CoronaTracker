@@ -64,12 +64,12 @@
       <li><code>v</code>: Movement to the left/right relative to <code>t=0</code></li>
     </ul>
     <p>Sadly, this model can't be automatically trained in your browser, hence the values are manually updated (values
-      in brackets are from January 31st):</p>
+      in brackets show past values with newest value left):</p>
     <ul class="model-nonlinear-1">
-      <li><code>a</code>: <span class="model-nonlinear-a">9313 (9141)</span></li>
-      <li><code>s</code>: <span class="model-nonlinear-s">0.224 (0.225)</span></li>
-      <li><code>v</code>: <span class="model-nonlinear-v">4.87 (4.89)</span></li>
-      <li>Root Mean Square Error (RMSE): 74.19 (76.18)<span class="model-nonlinear-rmse"></span></li>
+      <li><code>a</code>: <span class="model-nonlinear-a">10882 (9313, 9141)</span></li>
+      <li><code>s</code>: <span class="model-nonlinear-s">0.209 (0.224, 0.225)</span></li>
+      <li><code>v</code>: <span class="model-nonlinear-v">4.71 (4.87, 4.89)</span></li>
+      <li>Root Mean Square Error (RMSE): 110.80 (74.19, 76.18)<span class="model-nonlinear-rmse"></span></li>
     </ul>
     <hr>
     <p>In addition, there is now also an exponential model of which the base can be optimized. Despite the more advanced mathematical concepts behind this model (compared to <code>g(t)</code>) this model doesn't perform meaningfully better.</p>
@@ -80,12 +80,13 @@
       <li><code>b</code>: Base of the exponential function</li>
       <li><code>v</code>: Movement to the left/right</li>
     </ul>
-    <p>Sadly, this model can't be automatically trained in your browser, hence the values are manually updated:</p>
+    <p>Sadly, this model can't be automatically trained in your browser, hence the values are manually updated (values
+      in brackets show past values with newest value left):</p>
     <ul class="model-nonlinear-2">
-      <li><code>a</code>: <span class="model-nonlinear-a">21.75</span></li>
-      <li><code>b</code>: <span class="model-nonlinear-b">1.33</span></li>
-      <li><code>v</code>: <span class="model-nonlinear-v">0.84</span></li>
-      <li>Root Mean Square Error (RMSE): 368.36<span class="model-nonlinear-rmse"></span></li>
+      <li><code>a</code>: <span class="model-nonlinear-a">18.42 (21.75)</span></li>
+      <li><code>b</code>: <span class="model-nonlinear-b">1.30 (1.33)</span></li>
+      <li><code>v</code>: <span class="model-nonlinear-v">-1.45 (0.84)</span></li>
+      <li>Root Mean Square Error (RMSE): 474.34 (368.36)<span class="model-nonlinear-rmse"></span></li>
     </ul>
 
     <h3>Interpreting the models</h3>
@@ -221,6 +222,11 @@
           <th scope="row" class="date">2020/02/01</th>
           <td class="number">11791</td class="number">
           <td><a href="https://www.tagesschau.de/coronavirus-deutschland-117.html">Tagesschau</a></td>
+        </tr>
+        <tr class="dataset">
+          <th scope="row" class="date">2020/02/02</th>
+          <td class="number">14371</td class="number">
+          <td><a href="https://www.sueddeutsche.de/gesundheit/coronavirus-china-1.4781051">Süddeutsche Zeitung</a></td>
         </tr>
       </tbody>
     </table>
